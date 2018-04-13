@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class LambdaDemo {
-    // Attribute
+    // Attributes
     private int num;
     private ArrayList<Integer> arrayList;
 
@@ -26,6 +26,7 @@ public class LambdaDemo {
 
     private void start() {
         // Variables
+        int unassigned;
         int numLocal = 0;
         int numFinal = 0;
 
@@ -50,13 +51,19 @@ public class LambdaDemo {
 
         // Test lambda expression
         // 01. Local variables used but not declared in a lambda expression must be effectively final and definitely assigned.
-        /* arrayList.stream().forEach(n -> numLocal = n); */    // Illegal: numLocal is not effectively final
+        /* arrayList.stream().forEach(n -> unassigned = 0); */  // Illegal: unassigned is not definitely assigned before lambda
+        /* arrayList.stream().forEach(n -> numLocal = 0); */    // Illegal: numLocal is not effectively final because it occurs
+                                                                //          as the left hand side in an assignment expression,
+                                                                //          although its value actually never changes
         arrayList.stream().forEach(n -> n = numFinal);          // Legal: numFinal is effectively final
         arrayList.stream().forEach(n -> num = n);               // Legal: instance variables and static variables are not local variables
+        /* for(int i=0; i<arrayList.size(); i++) arrayList.stream().forEach(n -> n = i); */     // Illegal: i is not effectively final
+        for(Integer i : arrayList) arrayList.stream().forEach(n -> n = i);  // Legal: i is a new variable on each iteration,
+                                                                            //        therefore it is effectively final
     }
 
     public static void main(String[] args) {
-        LambdaDemo demo = new LambdaDemo(new Integer[]{6, 7, 8, 9, 10});
+        LambdaDemo demo = new LambdaDemo(new Integer[]{1, 2, 3, 4, 5});
         demo.start();
     }
 }
