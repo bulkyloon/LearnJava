@@ -57,9 +57,11 @@ public class LambdaDemo {
                                                                 //          although its value actually never changes
         arrayList.stream().forEach(n -> n = numFinal);          // Legal: numFinal is effectively final
         arrayList.stream().forEach(n -> num = n);               // Legal: instance variables and static variables are not local variables
-        /* for(int i=0; i<arrayList.size(); i++) arrayList.stream().forEach(n -> n = i); */     // Illegal: i is not effectively final
+        /* for(int i=0; i<1; i++) arrayList.stream().forEach(n -> n = i); */// Illegal: i is not effectively final because of i++,
+                                                                            //          although its value actually never changes
         for(Integer i : arrayList) arrayList.stream().forEach(n -> n = i);  // Legal: i is a new variable on each iteration,
                                                                             //        therefore it is effectively final
+        arrayList.stream().forEach(n -> {for(int i=0; i<1; i++) n = i;});   // Legal: i is declared in lambda
     }
 
     public static void main(String[] args) {
