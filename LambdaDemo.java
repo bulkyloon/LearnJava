@@ -15,20 +15,19 @@ public class LambdaDemo {
     }
 
     // Consumer is a functional interface
-    private class InnerClass implements Consumer<Integer> {
+    private class Action implements Consumer<Integer> {
         public void accept(Integer n) {
             System.out.print(n + "; ");
         }
     }
 
     private void start() {
-
-        // Inner class example
+        // Inner classes are useful for defining handler classes
         System.out.println("Inner class example:");
-        arrayList.stream().forEach(new InnerClass());
+        arrayList.stream().forEach(new Action());
         System.out.print("\n");
 
-        // Anonymous inner class example
+        // Anonymous inner class combines defining and creating an inner class into one step
         System.out.println("Anonymous inner class example:");
         arrayList.stream().forEach(new Consumer<Integer>() {
             public void accept(Integer n) {
@@ -37,7 +36,7 @@ public class LambdaDemo {
         });
         System.out.print("\n");
 
-        // Lambda expression example
+        // Lambda expression can be viewed as an anonymous class with a concise syntax
         System.out.println("Lambda expression example:");
         arrayList.stream().forEach(n -> System.out.print(n + "; "));
         System.out.print("\n");
